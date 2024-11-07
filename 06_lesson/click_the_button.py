@@ -14,8 +14,8 @@ button = driver.find_element(By.CSS_SELECTOR, 'button#ajaxButton')
 button.click()
 
 # Ожидание появления текста в зеленой плашке
-text_element = WebDriverWait(driver, 10).until(
-    EC.visibility_of_element_located((By.CSS_SELECTOR, 'div#content'))
+text_element = WebDriverWait(driver, 20).until(
+    EC.visibility_of_element_located((By.CSS_SELECTOR, '.bg-success'))
 )
 
 # Получение текста и вывод в консоль
