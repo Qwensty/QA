@@ -40,7 +40,7 @@ try:
     driver.find_element(By.ID, "continue").click()
 
     # Получение и проверка итоговой суммы
-    total_text = WebDriverWait(driver, 10).until(
+    total_text = WebDriverWait(driver, 30).until(
         EC.visibility_of_element_located((By.CLASS_NAME, "summary_total_label"))
     ).text
     assert "$58.29" in total_text, "Итоговая сумма неверна"

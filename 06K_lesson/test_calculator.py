@@ -22,9 +22,12 @@ try:
     driver.find_element(By.XPATH, "//span[text()='=']").click()
 
     # Ожидание появления результата
-    result = WebDriverWait(driver, 50).until(
+    WebDriverWait(driver, 50).until(
         EC.text_to_be_present_in_element((By.CSS_SELECTOR, ".screen"), "15")
     )
+
+    # Получение текста результата
+    result = driver.find_element(By.CSS_SELECTOR, ".screen").text
     assert result == "15", "Результат вычисления неверен"
 
 finally:

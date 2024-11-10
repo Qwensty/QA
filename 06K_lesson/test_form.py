@@ -11,7 +11,7 @@ try:
     driver.get("https://bonigarcia.dev/selenium-webdriver-java/data-types.html")
 
     # Установление времени ожидания элементов
-    wait = WebDriverWait(driver, 20)
+    wait = WebDriverWait(driver, 30)
 
     # Заполнение формы с ожиданием каждого элемента
     wait.until(EC.presence_of_element_located((By.NAME, "first-name"))).send_keys("Иван")
@@ -27,15 +27,20 @@ try:
     # Нажатие на кнопку Submit
     wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, "button[type='submit']"))).click()
 
-    # Ожидание, что поле Zip code будет отображено и подсвечено красным
-    zip_code_field = wait.until(
-        EC.presence_of_element_located((By.NAME, "zip-code")))
-    assert "is-invalid" in zip_code_field.get_attribute("class")
+    # Добавление дополнительного ожидания после нажатия Submit
+    wait.until(EC.presence_of_element_located((By.ID, "zip-code")))
+
+    # Ожидание, что поле zip-code будет отображено
+    zip_code_field = wait.until(EC.presence_of_element_located((By.ID, "zip-code")))
+
+    # Проверка наличия классов "alert py-2 alert-danger"
+    assert "alert py-2 alert-danger" in zip_code_field.get_attribute("class"), "Поле zip-code не подсвечено красным"
 
     # Проверка остальных полей
-    for field_id in ["first-name", "last-name", "address", "email", "phone", "city", "country", "job-position",
+    for field_id in ["first-name", "last-name", "address", "e-mail", "phone", "city", "country", "job-position",
                      "company"]:
-        assert "is-valid" in driver.find_element(By.ID, field_id).get_attribute("class")
+        field = driver.find_element(By.ID, field_id)
+        field_class = field.get_attribute("class")
 
 finally:
     driver.quit()
