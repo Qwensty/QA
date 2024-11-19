@@ -7,8 +7,8 @@ def test_form(driver):
     form_page.open()
 
     data = {
-        "first_name": "Иван",
-        "last_name": "Петров",
+        "firstname": "Иван",
+        "lastname": "Петров",
         "address": "Ленина, 55-3",
         "email": "test@skypro.com",
         "phone": "+7985899998787",
@@ -21,8 +21,12 @@ def test_form(driver):
     form_page.fill_form(data)
     form_page.submit()
 
-    assert "alert py-2 alert-danger" in form_page.get_field_class("zip-code")
-    for field_id in ["first-name", "last-name", "address", "e-mail", "phone", "city", "country", "job-position",
-                     "company"]:
-        field = driver.find_element(By.ID, field_id)
-        field_class = field.get_attribute("class")
+    # Получаем цвета всех полей
+    colors = form_page.get_all_fields_color()
+
+    # Проверяем, что поле Zip code подсвечено красным
+    assert colors["zip-code"] == "rgb(245, 194, 199)", "Zip code field is not red."
+
+    # Проверяем, что остальные поля подсвечены зеленым
+    for field in ["first-name", "last-name", "address", "e-mail", "phone", "city", "country", "job-position", "company"]:
+        assert colors[field] == "rgb(186, 219, 204)", f"Field {field} is not green."

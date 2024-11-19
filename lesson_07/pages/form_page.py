@@ -10,8 +10,8 @@ class FormPage:
         self.driver.get(self.URL)
 
     def fill_form(self, data):
-        self.driver.find_element(By.NAME, "first-name").send_keys(data["first_name"])
-        self.driver.find_element(By.NAME, "last-name").send_keys(data["last_name"])
+        self.driver.find_element(By.NAME, "first-name").send_keys(data["firstname"])
+        self.driver.find_element(By.NAME, "last-name").send_keys(data["lastname"])
         self.driver.find_element(By.NAME, "address").send_keys(data["address"])
         self.driver.find_element(By.NAME, "e-mail").send_keys(data["email"])
         self.driver.find_element(By.NAME, "phone").send_keys(data["phone"])
@@ -23,5 +23,14 @@ class FormPage:
     def submit(self):
         self.driver.find_element(By.CSS_SELECTOR, "button[type='submit']").click()
 
-    def get_field_class(self, field_id):
-        return self.driver.find_element(By.ID, field_id).get_attribute("class")
+    def get_field_color(self, field_name):
+        field = self.driver.find_element(By.ID, field_name)
+        return field.value_of_css_property("border-color")
+
+    def get_all_fields_color(self):
+        fields = ["first-name", "last-name", "address", "e-mail", "phone", "zip-code", "city", "country", "job-position",
+                  "company"]
+        field_colors = {}
+        for field in fields:
+            field_colors[field] = self.get_field_color(field)
+        return field_colors
